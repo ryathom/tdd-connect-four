@@ -6,8 +6,11 @@ require_relative 'player'
 class ConnectFour
   attr_reader :board
 
+  
   def initialize(rows = 6, cols = 7)
     @board = initialize_board(rows, cols)
+    @height = rows
+    @width = cols
   end
 
   def initialize_board(rows, cols)
@@ -15,7 +18,7 @@ class ConnectFour
   end
 
   def visualize_board
-    idx = @board.length - 1
+    idx = @height - 1
     until idx.negative?
       p @board[idx]
       idx -= 1
@@ -36,12 +39,9 @@ class ConnectFour
   end
 
   def horizontal_check
-    height = @board.length
-    width = @board.length
-
     # check every row, n-3 columns
-    height.times do |row|
-      (width - 3).times do |col|
+    @height.times do |row|
+      (@width - 3).times do |col|
         next if @board[row][col].nil?
 
         sym = @board[row][col]
@@ -52,12 +52,9 @@ class ConnectFour
   end
 
   def vertical_check
-    height = @board.length
-    width = @board.length
-
     # check every column, n-3 rows
-    width.times do |col|
-      (height - 3).times do |row|
+    @width.times do |col|
+      (@height - 3).times do |row|
         next if @board[row][col].nil?
 
         sym = @board[row][col]
@@ -72,12 +69,9 @@ class ConnectFour
   end
 
   def right_diagonal_check
-    height = @board.length
-    width = @board.length
-
     # check n-3 column, n-3 rows
-    (width - 3).times do |col|
-      (height - 3).times do |row|
+    (@width - 3).times do |col|
+      (@height - 3).times do |row|
         next if @board[row][col].nil?
 
         sym = @board[row][col]
@@ -90,12 +84,9 @@ class ConnectFour
   end
 
   def left_diagonal_check
-    height = @board.length
-    width = @board.length
-
     # check n-3 column, n-3 rows
-    (width - 3).times do |col|
-      (height - 3).times do |row|
+    (@width - 3).times do |col|
+      (@height - 3).times do |row|
         row += 3 # testing top n rows
         next if @board[row][col].nil?
 
@@ -106,5 +97,29 @@ class ConnectFour
       end
     end
     false
+  end
+
+  def register_players
+    @players = []
+
+    2.times do |i|
+      name = register_name(i+1)
+      symbol = register_symbol(i+1)
+      @players << Player.new(name, symbol, @board[0].length)
+    end
+  end
+
+  def register_name(id)
+    puts "Player #{id}, enter your name:"
+    gets.chomp
+  end
+
+  def register_symbol(id)
+    puts "Player #{id}, enter a letter or symbol to use as your game piece:"
+    loop do
+      symbol = gets.chomp
+      return symbol if symbol.length == 1
+      puts "Input error! Choose a single letter or symbol:"
+    end
   end
 end
