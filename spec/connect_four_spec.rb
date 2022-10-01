@@ -95,6 +95,12 @@ describe ConnectFour do
 
       it 'is game over' do
         expect(game.game_over?).to be true
+        expect(game.horizontal_check).to be true
+      end
+
+      it 'no false positives' do
+        expect(game.vertical_check).to be false
+        expect(game.diagonal_check).to be false
       end
     end
 
@@ -107,6 +113,12 @@ describe ConnectFour do
 
       it 'is game over' do
         expect(game.game_over?).to be true
+        expect(game.vertical_check).to be true
+      end
+
+      it 'no false positives' do
+        expect(game.horizontal_check).to be false
+        expect(game.diagonal_check).to be false
       end
     end
 
@@ -123,6 +135,13 @@ describe ConnectFour do
 
       it 'is game over' do
         expect(game.game_over?).to be true
+        expect(game.right_diagonal_check).to be true
+      end
+
+      it 'no false positives' do
+        expect(game.vertical_check).to be false
+        expect(game.horizontal_check).to be false
+        expect(game.left_diagonal_check).to be false
       end
     end
 
@@ -139,6 +158,13 @@ describe ConnectFour do
 
       it 'is game over' do
         expect(game.game_over?).to be true
+        expect(game.left_diagonal_check).to be true
+      end
+
+      it 'no false positives' do
+        expect(game.vertical_check).to be false
+        expect(game.horizontal_check).to be false
+        expect(game.right_diagonal_check).to be false
       end
     end
   end
