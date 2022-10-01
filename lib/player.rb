@@ -2,6 +2,8 @@
 
 # Player class for Connect Four game
 class Player
+  attr_reader :symbol, :name
+
   def initialize(name, symbol, width)
     @name = name
     @symbol = symbol
@@ -14,7 +16,7 @@ class Player
   end
 
   def player_input
-    puts "Choose a column - enter a number between 0 and #{@game_width - 1}"
+    puts "#{@name}, choose a column - enter a number between 0 and #{@game_width - 1}"
     loop do
       input = gets.chomp
       input = input.to_i if input.match?(/^\d+$/)

@@ -6,7 +6,6 @@ require_relative 'player'
 class ConnectFour
   attr_reader :board
 
-  
   def initialize(rows = 6, cols = 7)
     @board = initialize_board(rows, cols)
     @height = rows
@@ -23,6 +22,21 @@ class ConnectFour
       p @board[idx]
       idx -= 1
     end
+  end
+
+  def main
+    register_players
+    visualize_board
+
+    id = 0
+    until game_over?
+      pos = @players[id].player_input
+      update_board(pos, @players[id].symbol)
+      visualize_board
+      (id == 1) ? id = 0 : id = 1
+    end
+
+    puts "game over"
   end
 
   def update_board(pos, symbol)
