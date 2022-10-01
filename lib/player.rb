@@ -12,4 +12,15 @@ class Player
     return nil unless input.is_a?(Integer)
     return input if input.between?(0, @game_width - 1)
   end
+
+  def player_input
+    puts "Choose a column - enter a number between 0 and #{@game_width - 1}"
+    loop do
+      input = gets.chomp
+      input = input.to_i if input.match?(/^\d+$/)
+      input = verify_input(input)
+      return input unless input.nil?
+      puts "Input error! Please enter a number between 0 and #{@game_width - 1}."
+    end
+  end
 end
