@@ -110,11 +110,27 @@ describe ConnectFour do
       end
     end
 
-    context 'diagonal victory' do
+    context 'right diagonal victory' do
       before do
         game.update_board(1, 'B')
         2.times { game.update_board(2, 'B') }
-        3.times { game.update_board(3, 'B')}
+        3.times { game.update_board(3, 'B') }
+
+        4.times do |pos|
+          game.update_board(pos, 'A')
+        end
+      end
+
+      it 'is game over' do
+        expect(game.game_over?).to be true
+      end
+    end
+
+    context 'left diagonal victory' do
+      before do
+        game.update_board(2, 'B')
+        2.times { game.update_board(1, 'B') }
+        3.times { game.update_board(0, 'B') }
 
         4.times do |pos|
           game.update_board(pos, 'A')
