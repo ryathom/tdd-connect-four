@@ -30,11 +30,27 @@ describe ConnectFour do
     end
 
     it 'symbol in correct space' do
-      expect(game.board[0][pos]).to eql(symbol)
+      expect(game.board[0][3]).to eql('A')
     end
 
     it 'no other spaces changed' do
       expect(game.board.flatten.compact.length).to eq(1)
+    end
+  end
+
+  context 'when pieces are stacked' do
+    before do
+      pos = 3
+      game.update_board(pos, 'A')
+      game.update_board(pos, 'B')
+    end
+
+    it 'first symbol in correct space' do
+      expect(game.board[0][3]).to eql('A')
+    end
+
+    it 'second symbol in correct space' do
+      expect(game.board[1][3]).to eql('B')
     end
   end
 end

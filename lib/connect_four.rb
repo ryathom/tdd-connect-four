@@ -13,4 +13,13 @@ class ConnectFour
   def initialize_board(rows, cols)
     Array.new(rows) { Array.new(cols, nil) }
   end
+
+  def update_board(pos, symbol)
+    @board.each do |row|
+      if row[pos].nil?
+        row[pos] = symbol
+        break
+      end
+    end
+  end
 end
