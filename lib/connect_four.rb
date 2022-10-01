@@ -22,4 +22,7 @@ class ConnectFour
       end
     end
   end
+
+  def game_over?
+  end
 end

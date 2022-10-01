@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop: disable Metrics/BlockLength
+
 require_relative '../lib/connect_four'
 
 # Tests for the main Connect4/game logic class
@@ -22,35 +24,90 @@ describe ConnectFour do
     end
   end
 
-  context 'when board is updated once' do
-    before do
-      pos = 3
-      symbol = 'A'
-      game.update_board(pos, symbol)
+  describe '#update_board' do
+    context 'when board is updated once' do
+      before do
+        pos = 3
+        symbol = 'A'
+        game.update_board(pos, symbol)
+      end
+
+      it 'symbol in correct space' do
+        expect(game.board[0][3]).to eql('A')
+      end
+
+      it 'no other spaces changed' do
+        expect(game.board.flatten.compact.length).to eq(1)
+      end
     end
 
-    it 'symbol in correct space' do
-      expect(game.board[0][3]).to eql('A')
-    end
+    context 'when pieces are stacked' do
+      before do
+        pos = 3
+        game.update_board(pos, 'A')
+        game.update_board(pos, 'B')
+      end
 
-    it 'no other spaces changed' do
-      expect(game.board.flatten.compact.length).to eq(1)
+      it 'first symbol in correct space' do
+        expect(game.board[0][3]).to eql('A')
+      end
+
+      it 'second symbol in correct space' do
+        expect(game.board[1][3]).to eql('B')
+      end
+
+      it 'is not game over' do
+        expect(game.game_over?).to be false
+      end
     end
   end
 
-  context 'when pieces are stacked' do
-    before do
-      pos = 3
-      game.update_board(pos, 'A')
-      game.update_board(pos, 'B')
+  describe '#game_over' do
+    context 'no victory' do
+      before do
+        game.update_board(1, 'A')
+      end
+
+      it 'is not game over' do
+        expect(game.game_over?).to be false
+      end
     end
 
-    it 'first symbol in correct space' do
-      expect(game.board[0][3]).to eql('A')
+    context 'four mixed symbols' do
+      before do
+        game.update_board(0, 'A')
+        game.update_board(1, 'B')
+        game.update_board(2, 'A')
+        game.update_board(3, 'B')
+      end
+
+      it 'is not game over' do
+        expect(game.game_over?).to be false
+      end
     end
 
-    it 'second symbol in correct space' do
-      expect(game.board[1][3]).to eql('B')
+    context 'horizontal victory' do
+      before do
+        4.times do |pos|
+          game.update_board(pos, 'A')
+        end
+      end
+
+      it 'is game over' do
+        expect(game.game_over?).to be true
+      end
+    end
+
+    context 'vertical victory' do
+      before do
+        4.times do
+          game.update_board(1, 'A')
+        end
+      end
+
+      it 'is game over' do
+        expect(game.game_over?).to be true
+      end
     end
   end
 end
