@@ -17,26 +17,44 @@ class ConnectFour
   end
 
   def visualize_board
+    clear_screen
     idx = @height - 1
     until idx.negative?
-      p @board[idx]
+      row = @board[idx]
+      visible_row = '|'
+      row.each do |c|
+        if c.nil?
+          visible_row += '_'
+        else
+          visible_row += c 
+        end
+        visible_row += '|'
+      end
+      puts visible_row
       idx -= 1
     end
+    puts ' 0 1 2 3 4 5 6 '
+    puts nil
+  end
+
+  def clear_screen
+    system 'clear'
   end
 
   def main
     register_players
     visualize_board
 
-    id = 0
+    id = 1
     until game_over?
+      (id == 1) ? id = 0 : id = 1
       pos = @players[id].player_input
       update_board(pos, @players[id].symbol)
       visualize_board
-      (id == 1) ? id = 0 : id = 1
     end
 
-    puts "game over"
+    victor = @players[id].name
+    puts "#{victor} is the winner!"
   end
 
   def update_board(pos, symbol)
